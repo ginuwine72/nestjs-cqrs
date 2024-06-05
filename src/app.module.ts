@@ -4,16 +4,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { UserEntity } from './users/entities/user.entity';
-import { EventEntity } from './users/entities/event.entity';
+import appConfig from './config/app.config';
+import mysqlConfig from './config/mysql.config';
+import sqliteConfig from './config/sqlite.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: ['.env', '.env.development', '.env.test', '.env.production'],
+      load: [appConfig, mysqlConfig, sqliteConfig]
+    }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'database.sqlite',
-      entities: [UserEntity, EventEntity],
+      autoLoadEntities: true,
       synchronize: true,
     }),
     UsersModule,
