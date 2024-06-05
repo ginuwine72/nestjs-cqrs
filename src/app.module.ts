@@ -5,24 +5,37 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import appConfig from './config/app.config';
-import mysqlConfig from './config/mysql.config';
-import sqliteConfig from './config/sqlite.config';
+import { UserEntity } from './users/entities/user.entity';
+import { EventEntity } from './users/entities/event.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env', '.env.development', '.env.test', '.env.production'],
-      load: [appConfig, mysqlConfig, sqliteConfig]
+      load: [appConfig],
     }),
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'database.sqlite',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    TypeOrmModule.forFeature(
+      [UserEntity],
+      {
+        type: 'mysql',
+        host: 'localhost',
+        port: 3306,
+        database: 'nestjs',
+        username: 'root',
+        password: '',
+        synchronize: true,
+      }),
+    TypeOrmModule.forFeature(
+      [EventEntity],
+      {
+        type: 'sqlite',
+        database: 'nestjs.sqlite',
+        synchronize: true,
+      }),
     UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+}
