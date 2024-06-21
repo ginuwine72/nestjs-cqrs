@@ -1,18 +1,18 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity()
-export class EventEntity {
+export class OrderProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  aggregateId: string;
+  product_id: number;
 
   @Column()
-  event_type: string;
+  quantity: number;
 
-  @Column({ type: 'simple-json' })
-  event_data: string;
+  @Column()
+  net_price: number;
 
   @CreateDateColumn()
   created_at: Date;

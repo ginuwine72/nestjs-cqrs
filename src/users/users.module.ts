@@ -7,18 +7,7 @@ import { EventEntity } from './entities/event.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature(
-      [UserEntity, EventEntity],
-      {
-        type: 'mysql',
-        host: 'localhost',
-        port: 3306,
-        database: 'nestjs-cqrs',
-        username: 'root',
-        password: 'root',
-        synchronize: true,
-      }),
-  ],
+    TypeOrmModule.forFeature([UserEntity, EventEntity])],
   controllers: [UsersController],
   providers: [UsersService],
 })

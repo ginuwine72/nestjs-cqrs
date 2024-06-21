@@ -1,18 +1,18 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity()
-export class EventEntity {
+export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  aggregateId: string;
+  name: string;
 
   @Column()
-  event_type: string;
+  price: number;
 
-  @Column({ type: 'simple-json' })
-  event_data: string;
+  @Column({ default: true })
+  isActive: boolean;
 
   @CreateDateColumn()
   created_at: Date;

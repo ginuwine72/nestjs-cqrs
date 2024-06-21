@@ -6,6 +6,11 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DATABASE=redis
+      - REDIS_PASSWORD=root
+      - REDIS_MASTER_PASSWORD=root
     command: [ "redis-server", "--appendonly", "yes" ]
 
   redis-insight:
