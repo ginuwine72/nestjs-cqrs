@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: [ "redis-server", "--appendonly", "yes" ]
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight
+    ports:
+      - "5540:5540"
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=nestjs-cqrs
+      - MYSQL_ROOT_PASSWORD=root
+
+  postgresql:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=nestjs-cqrs
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: nestjs-cqrs
+
+  mongo-express:
+     image: mongo-express:latest
+     ports:
+       - "8081:8081"
+     environment:
+       #      ME_CONFIG_BASICAUTH: false
+       ME_CONFIG_BASICAUTH_USERNAME: root
+       ME_CONFIG_BASICAUTH_PASSWORD: root
+       ME_CONFIG_MONGODB_ADMINUSERNAME: root
+       ME_CONFIG_MONGODB_ADMINPASSWORD: root
+       ME_CONFIG_MONGODB_PORT: 27017
+       ME_CONFIG_MONGODB_SERVER: mongo
+       ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+       ME_CONFIG_SITE_SSL_ENABLED: false
+       ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017
