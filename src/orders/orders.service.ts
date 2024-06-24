@@ -1,10 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class OrdersService {
+  constructor(
+    @Inject('ORDER_SERVICE') private readonly orderService: ClientProxy,
+  ) {}
+
   create(createOrderDto: CreateOrderDto) {
+    const pattern = { cmd: 'order.created' };
+    const payload = { payload: 'payload.order.created' };
+
+    return this.orderService
+      .send<string>(pattern, payload);
+
     return 'This action adds a new order';
   }
 

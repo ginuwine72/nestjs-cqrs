@@ -4,10 +4,27 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { UserEntity } from './entities/user.entity';
 import { EventEntity } from './entities/event.entity';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity, EventEntity])],
+    ClientsModule.register([
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'nestjs-cqrs-user',
+            brokers: ['localhost:9092'],
+          },
+          consumer: {
+            groupId: 'nestjs-cqrs-user-consumer'
+          }
+        }
+      },
+    ]),
+    TypeOrmModule.forFeature([UserEntity, EventEntity])
+  ],
   controllers: [UsersController],
   providers: [UsersService],
 })

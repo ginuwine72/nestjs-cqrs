@@ -28,7 +28,8 @@ import { PaymentsModule } from './payments/payments.module';
         password: 'root',
         autoLoadEntities: true,
         synchronize: true,
-      }),
+      }
+    ),
     UsersModule,
     OrdersModule,
     ProductsModule,

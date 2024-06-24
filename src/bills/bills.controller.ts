@@ -2,14 +2,21 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { BillsService } from './bills.service';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('bills')
 export class BillsController {
   constructor(private readonly billsService: BillsService) {}
 
-  @Post()
-  create(@Body() createBillDto: CreateBillDto) {
-    return this.billsService.create(createBillDto);
+  // @Post()
+  // create(@Body() createBillDto: CreateBillDto) {
+  //   return this.billsService.create(createBillDto);
+  // }
+
+  // @EventPattern({ cmd: 'order.created' })
+  @MessagePattern({ cmd: 'order.created' })
+  create(@Payload() message: { cmd: string }) {
+    return message;
   }
 
   @Get()
